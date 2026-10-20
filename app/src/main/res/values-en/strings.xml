@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Class Practice</string>
+    <string name="principalScreen">Practice Mobile App Development</string>
+    <string name="back">Back</string>
+    <string name="bottom_app_bar">Bottom app bar</string>
+    <string name="home_fab_text">NOTIFICACION</string>
+    <string name="img_desc">Class Practice</string>
+    <string name="materia">Mobile App Programming</string>
+    <string name="nombre">Jesus</string>
+    <string name="apellido">Suarez</string>
+</resources>

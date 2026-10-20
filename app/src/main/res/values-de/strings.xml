@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Übung im Unterricht</string>
+    <string name="principalScreen">App-Entwicklung</string>
+    <string name="back">Zurück</string>
+    <string name="bottom_app_bar">Untere Leiste</string>
+    <string name="home_fab_text">NOTIFICACION</string>
+    <string name="img_desc">Übung im Unterricht</string>
+    <string name="materia">Programmierung von mobilen Anwendungen</string>
+    <string name="nombre">Jesus</string>
+    <string name="apellido">Suarez</string>
+
+</resources>

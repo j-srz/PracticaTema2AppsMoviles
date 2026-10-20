@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Practica En clase</string>
+    <string name="principalScreen">Practica Desarrollo de apps moviles</string>
+    <string name="back">Atrás</string>
+    <string name="bottom_app_bar">Barra inferior</string>
+    <string name="home_fab_text">No se q</string>
+    <string name="img_desc">Practica En clase</string>
+    <string name="materia">Programacion de apps moviles</string>
+    <string name="nombre">Jesus</string>
+    <string name="apellido">Suarez</string>
+</resources>
