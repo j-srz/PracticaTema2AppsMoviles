@@ -121,15 +121,32 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ViewContainer() {
+    // Estado de la cola de msj emergentes (snackbar)
     val snackbarHostState = remember { SnackbarHostState() }
+
+    // Ambito de corrutinas
+    // (Supervisor de las tareas en seg plano)
     val coroutineScope = rememberCoroutineScope()
 
+
+    // Esqueleto q organiza la pantalla de la nuestra app
+    // Tiene espacios para cada parte
+    // topBar
+    // bottomBar
+    // floatingActionButton: boton flotante
+    // content: contenido de la pantalla
+    // snackbarHost: host de los snackbars
+    // ALGUNOS MAS
     Scaffold(
+        // Indicamos al Scaffold donde se mostraran los snackbars
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, // Define donde se mostraran los snackbars
-        // el hostState es el controlador de los snackbars
+
+        // PARAMETRO
         topBar = {
+            // EL COMPONENTE
             TopAppBar(
                 title = { Text(stringResource(R.string.principalScreen)) },
+                // TopAppBarDefaults: Ojeto de ultil de compose para poveeer valores de MD
                 colors = TopAppBarDefaults.topAppBarColors(
                     titleContentColor = Color.White,
                     actionIconContentColor = Color.White,
@@ -137,24 +154,30 @@ fun ViewContainer() {
                     scrolledContainerColor = Color.White,
                     containerColor = MaterialTheme.colorScheme.secondary
                 ),
+                // IGL AQUI PARAMETRO
                 navigationIcon = {
+                    // EL COMPONENTE
                     IconButton(
                         onClick = {}
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back),
+                            // PARA TEXTOS SE USA titleContentColor o modificador color
+                            // PARA ICONOS SE USA tint
                             tint = Color.White
                         )
                     }
                 }
             )
         },
+
         bottomBar = {
             BottomAppBar(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.primary
             ) {
+                // ESTE NO TE DA PARAMETROS SOLO UN GRAN CONTENEDOR
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
@@ -164,15 +187,25 @@ fun ViewContainer() {
                 )
             }
         },
+        // Hueco del Scaffold para colocar el botón flotante
         floatingActionButton = {
-            val context = LocalContext.current
+            //PARA EL TOAST OCUPAMOS EL CONTEXT
+            // val context = LocalContext.current
+
+            // AQUI CREAMOS EL BOTON FLOTANTE
             FloatingActionButton(onClick = {
                 // Toast.makeText(
                 //    context,
                 //    R.string.home_fab_text,
                 //    Toast.LENGTH_LONG
                 // ).show()
+
+
+
+                // Usamos el coroutineScope (el de arriba)
+                // para lanzar una tarea asíncrona
                 coroutineScope.launch {
+                    // Mandamos a llamar al snackbarHostState para mostrar el mensaje flotante
                     snackbarHostState.showSnackbar(
                         message = "Snackbar! <3",
                         actionLabel = "Do something"
@@ -185,6 +218,11 @@ fun ViewContainer() {
                 )
             }
         }
+
+        // SE LLAMA FUNCION lamda
+        // PARA DEFINIR EL CONTENIDO DE LA PANTALLA
+        // LE DICE CUANTO ESPACIO USO EN LA BARRA DE ARRIBA Y ABAJO.
+        // TE DICE CUANTO SOBRO
     ) { innerPadding ->
         ContentView(modifier = Modifier.padding(innerPadding))
     }
