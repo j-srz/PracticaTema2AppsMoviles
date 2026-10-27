@@ -1,6 +1,7 @@
 package com.example.prueba
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -53,8 +54,14 @@ import com.example.prueba.ui.theme.PruebaTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    private val TAG = "MainActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ShowToast("FUNCION oncreate()")
+
         enableEdgeToEdge()
         setContent {
             PruebaTheme {
@@ -62,6 +69,53 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        ShowToast("FUNCION onstart()")
+    }
+
+    // IMPLEMENTAR
+    // onResume
+    override fun onResume() {
+        super.onResume()
+        ShowToast("FUNCION onresume()")
+    }
+
+    // onPause
+    override fun onPause() {
+        super.onPause()
+        ShowToast("FUNCION onpause()")
+    }
+
+    // onStop
+    override fun onStop() {
+        super.onStop()
+        ShowToast("FUNCION onstop()")
+    }
+
+    // onDestroy
+    override fun onDestroy() {
+        super.onDestroy()
+        ShowToast("FUNCION ondestroy()")
+    }
+
+    fun ShowToast(message:String) {
+        val toast = Toast.makeText( // Metodo de la clase Toast encargado de contruir y preparar el toast
+            this, // Contexto de la actividad
+            message,
+            Toast.LENGTH_LONG
+        )
+        toast.show() // Metodo para mostrar el toast
+        Log.i(TAG, message)
+        // v verbose info
+        // d debug info
+        // i info
+        // w warning
+        // e error
+        // wtf errs catastroficos
+    }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +125,8 @@ fun ViewContainer() {
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, // Define donde se mostraran los snackbars
+        // el hostState es el controlador de los snackbars
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.principalScreen)) },
@@ -112,12 +167,17 @@ fun ViewContainer() {
         floatingActionButton = {
             val context = LocalContext.current
             FloatingActionButton(onClick = {
-                Toast.makeText(
-                    context,
-                    R.string.home_fab_text,
-                    Toast.LENGTH_LONG
-                ).show()
-
+                // Toast.makeText(
+                //    context,
+                //    R.string.home_fab_text,
+                //    Toast.LENGTH_LONG
+                // ).show()
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = "Snackbar! <3",
+                        actionLabel = "Do something"
+                    )
+                }
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -155,7 +215,7 @@ fun ContentView(modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = counter.toString(),
-                    fontSize = 20.sp,
+                     fontSize = 20.sp,
                     color = Color.DarkGray,
                     modifier = Modifier.padding(start = 8.dp)
                 )
