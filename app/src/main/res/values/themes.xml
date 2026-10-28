@@ -2,4 +2,18 @@
 <resources>
 
     <style name="Theme.Prueba" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/primary</item>
+
+        <item name="windowSplashScreenAnimatedIcon">@drawable/play_store_512</item>
+
+        <!-- COLOR DE FONDO DEL ICONO -->
+        <!-- <item name="windowSplashScreenIconBackgroundColor">COLOR</item> -->
+
+        <item name="postSplashScreenTheme">@style/Theme.Prueba</item>
+
+    </style>
+
+
 </resources>
