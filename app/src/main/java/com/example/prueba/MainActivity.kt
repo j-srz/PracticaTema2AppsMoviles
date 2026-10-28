@@ -50,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.prueba.ui.theme.PruebaTheme
 import kotlinx.coroutines.launch
 
@@ -57,7 +58,13 @@ class MainActivity : ComponentActivity() {
 
     private val TAG = "MainActivity"
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        // Aqui me falto otra cosa
+
+
         super.onCreate(savedInstanceState)
 
         ShowToast("FUNCION oncreate()")

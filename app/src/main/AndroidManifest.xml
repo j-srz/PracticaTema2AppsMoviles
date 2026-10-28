@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Prueba">
+        <!-- Aqui me falto algo -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
