@@ -8,4 +8,11 @@
     <string name="materia">Programacion de apps moviles</string>
     <string name="nombre">Jesus</string>
     <string name="apellido">Suarez</string>
+
+
+    <string name="options_menu">Opciones</string>
+    <string name="profile">Perfil</string>
+    <string name="config">Configuracion</string>
+    <string name="logout">Cerrar sesion</string>
+
 </resources>
