@@ -56,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -66,6 +67,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.prueba.ui.theme.PruebaTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
 
@@ -79,7 +81,7 @@ class MainActivity : ComponentActivity() {
         splashScreen.setKeepOnScreenCondition { keepSplash }
 
         lifecycleScope.launch {
-            delay(3000)
+            delay(3000.milliseconds)
             keepSplash = false
         }
 
@@ -267,7 +269,7 @@ fun DropDownMenu() {
                 text = { Text(stringResource(R.string.profile)) },
                 onClick = {
                     expanded = false
-// Acción para Perfil
+                    // Acción para Perfil
                 },
                 leadingIcon = {
                     Icon(Icons.Default.Person, contentDescription = null)
@@ -278,7 +280,7 @@ fun DropDownMenu() {
                 text = { Text(stringResource(R.string.config)) },
                 onClick = {
                     expanded = false
-// Acción para Configuración
+                    // Acción para Configuración
                 },
                 leadingIcon = {
                     Icon(Icons.Default.Settings, contentDescription = null)
@@ -291,7 +293,7 @@ fun DropDownMenu() {
                 text = { Text(stringResource(R.string.logout)) },
                 onClick = {
                     expanded = false
-// Acción para Cerrar sesión
+                    // Acción para Cerrar sesión
                 },
                 leadingIcon = {
                     Icon(Icons.Default.ExitToApp, contentDescription = null)
@@ -309,7 +311,7 @@ fun ContentView(modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.Red)
+            .background(colorResource(id = R.color.secundary))
     ) {
         item {
             Image(
@@ -320,44 +322,45 @@ fun ContentView(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .height(300.dp)
             )
-            Row(modifier = Modifier.padding(8.dp)) {
+            Row(modifier = Modifier.background(Color.Black).padding(10.dp)) {
                 Icon(
                     painter = painterResource(R.drawable.baseline_exposure_plus_1_24),
-                    contentDescription = "Star",
+                    contentDescription = "Plus",
+                    tint = Color.White,
                     modifier = Modifier.clickable { counter++ }
                 )
                 Text(
                     text = counter.toString(),
                      fontSize = 20.sp,
-                    color = Color.DarkGray,
+                    color = Color.White,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
             Text(
                 text = stringResource(R.string.img_desc),
                 fontSize = 24.sp,
-                color = Color.Blue,
+                color = Color.White,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
             Text(
                 text = stringResource(R.string.materia),
                 fontSize = 24.sp,
-                color = Color.Blue,
+                color = Color.White,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
             Text(
                 text = stringResource(R.string.nombre),
                 fontSize = 25.sp,
-                color = Color.Magenta,
+                color = Color.Gray,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
             Text(
                 text = stringResource(R.string.apellido),
                 fontSize = 24.sp,
-                color = Color.Blue,
+                color = Color.Gray,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
@@ -376,6 +379,8 @@ fun ContentView(modifier: Modifier = Modifier) {
                         contentScale = ContentScale.Crop,
                         contentDescription = "mobileApps"
                     )
+                }
+                item {
                     Image(
                         modifier = Modifier
                             .size(150.dp, 100.dp)
@@ -384,6 +389,8 @@ fun ContentView(modifier: Modifier = Modifier) {
                         contentScale = ContentScale.Crop,
                         contentDescription = "mobileApps"
                     )
+                }
+                item {
                     Image(
                         modifier = Modifier
                             .size(150.dp, 100.dp)
@@ -392,6 +399,8 @@ fun ContentView(modifier: Modifier = Modifier) {
                         contentScale = ContentScale.Crop,
                         contentDescription = "mobileApps"
                     )
+                }
+                item {
                     Image(
                         modifier = Modifier
                             .size(150.dp, 100.dp)
@@ -400,6 +409,8 @@ fun ContentView(modifier: Modifier = Modifier) {
                         contentScale = ContentScale.Crop,
                         contentDescription = "mobileApps"
                     )
+                }
+                item {
                     Image(
                         modifier = Modifier
                             .size(150.dp, 100.dp)
