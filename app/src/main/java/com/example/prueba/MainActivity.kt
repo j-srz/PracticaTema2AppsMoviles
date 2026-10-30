@@ -204,7 +204,10 @@ fun ViewContainer() {
                     }
                 },
                 // Esto nos paso el profe
+                // Un slot de acciones (derecha)
+
                 actions = {
+                    // Boton de favorito
                     IconButton(onClick = { /* Acción de me gusta */ }) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
@@ -213,6 +216,7 @@ fun ViewContainer() {
                         )
 
                     }
+                    // Boton de compartir
                     IconButton(onClick = { /* Acción de compartir */ }) {
                         Icon(
                             imageVector = Icons.Default.Share,
@@ -220,13 +224,13 @@ fun ViewContainer() {
                             tint = Color.White
                         )
                     }
-                DropDownMenu()
+                    // Podemos agregar mas botones
+
+                    // Aqui llamamos un menu desplegable
+                    DropDownMenu()
                 }
             )
         },
-
-
-
 
 
         bottomBar = {
@@ -286,10 +290,19 @@ fun ViewContainer() {
 }
 
 // Este componente nos paso el profe
+// Menu desplegable
 @Composable
 fun DropDownMenu() {
+    // Estado del menu desplegable (abierto o cerrado)
     var expanded by remember { mutableStateOf(false) }
+
+
+    // El box es para anclar el menu flotante
+    // abajo del boton que lo abre
     Box {
+
+        // Boton disparador
+        // Modifica el estado
         IconButton(onClick = { expanded = true }) {
             Icon(
                 imageVector = Icons.Default.MoreVert,
@@ -298,39 +311,44 @@ fun DropDownMenu() {
             )
         }
 
+        // El menu despliegable que sale con el boton
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false } // Se cierra al hacer click fuera del menu
         ) {
+            // Opcion 1: Perfil
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.profile)) },
                 onClick = {
-                    expanded = false
-// Acción para Perfil
+                    expanded = false // Cierra el menu al hacer click
+                    // Acción para Perfil
                 },
                 leadingIcon = {
                     Icon(Icons.Default.Person, contentDescription = null)
                 }
             )
 
+            // Opcion 2: Configuración
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.config)) },
                 onClick = {
                     expanded = false
-// Acción para Configuración
+                    // Acción para Configuración
                 },
                 leadingIcon = {
                     Icon(Icons.Default.Settings, contentDescription = null)
                 }
             )
 
+            // Divisor entre opciones
             HorizontalDivider()
 
+            // Opcion 3: Cerrar sesión
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.logout)) },
                 onClick = {
                     expanded = false
-// Acción para Cerrar sesión
+                    // Acción para Cerrar sesión
                 },
                 leadingIcon = {
                     Icon(Icons.Default.ExitToApp, contentDescription = null)
