@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,10 +22,19 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +47,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -50,14 +61,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import com.example.prueba.ui.theme.PruebaTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
     private val TAG = "MainActivity"
+    private var keepSplash = true
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { keepSplash }
+
+        lifecycleScope.launch {
+            delay(3000)
+            keepSplash = false
+        }
+
+
+
         super.onCreate(savedInstanceState)
 
         ShowToast("FUNCION oncreate()")
@@ -99,6 +126,13 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
         ShowToast("FUNCION ondestroy()")
     }
+
+    // onRestart
+    override fun onRestart() {
+        super.onRestart()
+        ShowToast("FUNCION onrestart()")
+    }
+
 
     fun ShowToast(message:String) {
         val toast = Toast.makeText( // Metodo de la clase Toast encargado de contruir y preparar el toast
@@ -168,9 +202,32 @@ fun ViewContainer() {
                             tint = Color.White
                         )
                     }
+                },
+                // Esto nos paso el profe
+                actions = {
+                    IconButton(onClick = { /* Acción de me gusta */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Favorite,
+                            contentDescription = "Marcar como favorito",
+                            tint = Color.White
+                        )
+
+                    }
+                    IconButton(onClick = { /* Acción de compartir */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = "Compartir",
+                            tint = Color.White
+                        )
+                    }
+                DropDownMenu()
                 }
             )
         },
+
+
+
+
 
         bottomBar = {
             BottomAppBar(
@@ -227,6 +284,63 @@ fun ViewContainer() {
         ContentView(modifier = Modifier.padding(innerPadding))
     }
 }
+
+// Este componente nos paso el profe
+@Composable
+fun DropDownMenu() {
+    var expanded by remember { mutableStateOf(false) }
+    Box {
+        IconButton(onClick = { expanded = true }) {
+            Icon(
+                imageVector = Icons.Default.MoreVert,
+                contentDescription = stringResource(R.string.options_menu),
+                tint= Color.White
+            )
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.profile)) },
+                onClick = {
+                    expanded = false
+// Acción para Perfil
+                },
+                leadingIcon = {
+                    Icon(Icons.Default.Person, contentDescription = null)
+                }
+            )
+
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.config)) },
+                onClick = {
+                    expanded = false
+// Acción para Configuración
+                },
+                leadingIcon = {
+                    Icon(Icons.Default.Settings, contentDescription = null)
+                }
+            )
+
+            HorizontalDivider()
+
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.logout)) },
+                onClick = {
+                    expanded = false
+// Acción para Cerrar sesión
+                },
+                leadingIcon = {
+                    Icon(Icons.Default.ExitToApp, contentDescription = null)
+                }
+            )
+        }
+    }
+}
+
+
 
 @Composable
 fun ContentView(modifier: Modifier = Modifier) {

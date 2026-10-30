@@ -9,4 +9,8 @@
     <string name="materia">Mobile App Programming</string>
     <string name="nombre">Jesus</string>
     <string name="apellido">Suarez</string>
+    <string name="options_menu">Options</string>
+    <string name="profile">Profile</string>
+    <string name="config">Settings</string>
+    <string name="logout">Log out</string>
 </resources>

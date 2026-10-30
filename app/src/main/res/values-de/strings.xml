@@ -9,5 +9,9 @@
     <string name="materia">Programmierung von mobilen Anwendungen</string>
     <string name="nombre">Jesus</string>
     <string name="apellido">Suarez</string>
+    <string name="options_menu">Optionen</string>
+    <string name="profile">Profil</string>
+    <string name="config">Einstellungen</string>
+    <string name="logout">Abmelden</string>
 
 </resources>
