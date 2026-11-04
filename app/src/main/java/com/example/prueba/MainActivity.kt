@@ -1,5 +1,8 @@
 package com.example.prueba
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -22,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddLink
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -160,6 +164,9 @@ fun ViewContainer() {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, // Define donde se mostraran los snackbars
         // el hostState es el controlador de los snackbars
@@ -184,16 +191,24 @@ fun ViewContainer() {
                         )
                     }
                 },
-                // Esto nose paso
+                // Esto noss paso el profe
+                // INTENTS
+                // Explicitos: Dentro de la app
+                // Implicitos: El sistema resulve en apps ext
+                // Tiene q tener acc al localcontex
                 actions = {
-                    IconButton(onClick = { /* Acción de me gusta */ }) {
+
+
+                    IconButton (onClick = { openWebScreen(context) } ) {
                         Icon(
-                            imageVector = Icons.Default.Favorite,
-                            contentDescription = "Marcar como favorito",
+                            imageVector = Icons.Default.AddLink,
+                            contentDescription = "Abrir un navegador externo",
                             tint = Color.White
                         )
 
                     }
+
+
                     IconButton(onClick = { /* Acción de compartir */ }) {
                         Icon(
                             imageVector = Icons.Default.Share,
@@ -301,6 +316,25 @@ fun DropDownMenu() {
             )
         }
     }
+}
+
+// YO 4 Calendario, Alarma, Archivos y descargas
+
+fun openWebScreen(context: Context) {
+    val url = Uri.parse("https://aguascalientes.tecnm.mx/")
+    val intent = Intent(Intent.ACTION_VIEW, url)
+
+    try {
+
+        context.startActivity(intent)
+
+    } catch (e: Exception) {
+
+        Log.e("MainActivity", "Fallo...")
+
+    }
+
+
 }
 
 
