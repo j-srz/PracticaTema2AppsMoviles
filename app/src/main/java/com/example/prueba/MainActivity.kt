@@ -280,6 +280,8 @@ fun DropDownMenu() {
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
+
+            //
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.profile)) },
                 onClick = {
@@ -319,13 +321,14 @@ fun DropDownMenu() {
 }
 
 // YO 4 Calendario, Alarma, Archivos y descargas
+//
 
 fun openWebScreen(context: Context) {
-    val url = Uri.parse("https://aguascalientes.tecnm.mx/")
-    val intent = Intent(Intent.ACTION_VIEW, url)
+
 
     try {
-
+        val url = Uri.parse("https://aguascalientes.tecnm.mx/")
+        val intent = Intent(Intent.ACTION_VIEW, url)
         context.startActivity(intent)
 
     } catch (e: Exception) {
@@ -333,9 +336,39 @@ fun openWebScreen(context: Context) {
         Log.e("MainActivity", "Fallo...")
 
     }
-
-
 }
+
+fun openCalendar(context: Context) {
+    try {
+
+        val intent = Intent(Intent.ACTION_VIEW, )
+
+
+
+    } catch (e: Exception) {
+
+    }
+}
+
+fun openAlarm(context: Context) {
+    try {
+
+    } catch (e: Exception) {
+
+    }
+}
+
+fun openFiles(context: Context) {
+    try {
+
+
+    } catch (e: Exception) {
+
+    }
+}
+
+
+
 
 
 
