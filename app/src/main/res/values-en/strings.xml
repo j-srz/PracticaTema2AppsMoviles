@@ -13,4 +13,7 @@
     <string name="profile">Profile</string>
     <string name="config">Settings</string>
     <string name="logout">Log out</string>
+    <string name="calendar">calendar</string>
+    <string name="alarm">Alarm</string>
+    <string name="file">Files</string>
 </resources>

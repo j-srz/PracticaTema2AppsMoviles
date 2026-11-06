@@ -14,5 +14,9 @@
     <string name="profile">Perfil</string>
     <string name="config">Configuracion</string>
     <string name="logout">Cerrar sesion</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="calendar">calendar</string>
+    <string name="alarm">Alarm</string>
+    <string name="file">Files</string>
 
 </resources>

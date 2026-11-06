@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.AlarmClock
+import android.provider.CalendarContract
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -26,13 +28,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddLink
+import androidx.compose.material.icons.filled.Event
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.NavigateNext
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -71,6 +77,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.prueba.ui.theme.PruebaTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import kotlin.time.Duration.Companion.milliseconds
 
 class MainActivity : ComponentActivity() {
@@ -208,11 +215,14 @@ fun ViewContainer() {
 
                     }
 
-
-                    IconButton(onClick = { /* Acción de compartir */ }) {
+                    // Aqui tenemos que abrir la secondActivityw
+                    IconButton(onClick = {
+                        val intent = Intent(context, SecondActivity::class.java)
+                        context.startActivity(intent)
+                    }) {
                         Icon(
-                            imageVector = Icons.Default.Share,
-                            contentDescription = "Compartir",
+                            imageVector = Icons.Default.NavigateNext,
+                            contentDescription = "Siguiente pagina",
                             tint = Color.White
                         )
                     }
@@ -267,6 +277,11 @@ fun ViewContainer() {
 @Composable
 fun DropDownMenu() {
     var expanded by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+
     Box {
         IconButton(onClick = { expanded = true }) {
             Icon(
@@ -283,37 +298,42 @@ fun DropDownMenu() {
 
             //
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.profile)) },
+                text = { Text(stringResource(R.string.calendar)) },
                 onClick = {
                     expanded = false
-                    // Acción para Perfil
+                    // Acccion oara calendario
+                    openCalendar(context)
+
+
                 },
                 leadingIcon = {
-                    Icon(Icons.Default.Person, contentDescription = null)
+                    Icon(Icons.Default.Event, contentDescription = null)
                 }
             )
 
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.config)) },
+                text = { Text(stringResource(R.string.alarm)) },
                 onClick = {
                     expanded = false
-                    // Acción para Configuración
+                    // Acción para Alarma
+                    openAlarm(context)
                 },
                 leadingIcon = {
-                    Icon(Icons.Default.Settings, contentDescription = null)
+                    Icon(Icons.Default.Watch, contentDescription = null)
                 }
             )
 
             HorizontalDivider()
 
             DropdownMenuItem(
-                text = { Text(stringResource(R.string.logout)) },
+                text = { Text(stringResource(R.string.file)) },
                 onClick = {
                     expanded = false
-                    // Acción para Cerrar sesión
+                    // Acción para Files
+                    openFiles(context)
                 },
                 leadingIcon = {
-                    Icon(Icons.Default.ExitToApp, contentDescription = null)
+                    Icon(Icons.Default.FileDownload, contentDescription = null)
                 }
             )
         }
@@ -341,29 +361,56 @@ fun openWebScreen(context: Context) {
 fun openCalendar(context: Context) {
     try {
 
-        val intent = Intent(Intent.ACTION_VIEW, )
+        val intent = Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI).apply {
+            val beginTime: Calendar = Calendar.getInstance().apply {
+                set(2021, 0, 23, 7, 30)
+            }
+            val endTime = Calendar.getInstance().apply {
+                set(2021, 0, 23, 10, 30)
+            }
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.timeInMillis)
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.timeInMillis)
+            putExtra(CalendarContract.Events.TITLE, "Evento importante")
+            putExtra(CalendarContract.Events.EVENT_LOCATION, "Tijuana")
+        }
+        context.startActivity(intent)
+
 
 
 
     } catch (e: Exception) {
-
+        Log.e("MainActivity", "Fallo en abrir calendario" + e.message )
     }
 }
 
 fun openAlarm(context: Context) {
     try {
 
-    } catch (e: Exception) {
+        val intent = Intent(AlarmClock.ACTION_SET_ALARM).apply {
+            putExtra(AlarmClock.EXTRA_MESSAGE, "Despiertaaaaaaaaaaaaaa")
+            putExtra(AlarmClock.EXTRA_HOUR, 7)
+            putExtra(AlarmClock.EXTRA_MINUTES, 30)
+        }
+        context.startActivity(intent)
 
+
+
+
+    } catch (e: Exception) {
+        Log.e("MainActivity", "Fallo en abrir alarma" + e.message)
     }
 }
 
 fun openFiles(context: Context) {
     try {
-
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, "*/*")
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+        context.startActivity(intent)
 
     } catch (e: Exception) {
-
+        Log.e("MainActivity", "Fallo en abrir alarma" + e.message)
     }
 }
 
