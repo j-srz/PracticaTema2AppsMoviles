@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -48,12 +49,16 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -174,103 +179,195 @@ fun ViewContainer() {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, // Define donde se mostraran los snackbars
-        // el hostState es el controlador de los snackbars
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.principalScreen)) },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    titleContentColor = Color.White,
-                    actionIconContentColor = Color.White,
-                    navigationIconContentColor = Color.White,
-                    scrolledContainerColor = Color.White,
-                    containerColor = MaterialTheme.colorScheme.secondary
-                ),
-                navigationIcon = {
-                    IconButton(
-                        onClick = {}
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back),
-                            tint = Color.White
-                        )
+    // ModalNavegatioDrawer
+    // USa un DraweState y corrutinas
+    // por q corrutinas por que el hilo principal de la app y si activo el menu se activa en un segudo hilo
+    // la corrutina es para ejecutar tareas en paralelo
+    // Tarea investigar que es e implemnetarlo para mañana
+
+
+
+    // 11-11-2026
+    // Hacer navegacion
+    // Video en moodle
+    // Hacer proyecto niuevo para implementar lo del video
+    // hay mas esquemas de navegcion que los intestns
+    // --los activitys :: Aqui se redibujaba todo es para varias pantallas
+    // --frames :: un frame es lo que queda de la pantalla despeus de los mensus barras etc solo el contenido de la app
+    // pero complico las cosas , las activitys y los frmaes tienen distintos cliclos de vida y s etrabajaba con xml
+
+    // Google saco otro parche de hacer un grafo es como hacer en figma las pantallas
+    // Funte,  destino, lienas
+
+    // de XML a Frafo luego A nav2
+    // con compose el nav2
+
+    // Ahora se usan funciones
+    // en lugar de un frame llama una funcion el menu eiconos
+    // salio nav3 esta es nativa, esta deja manejar de forma nativa el stck
+    // --- Una pila tiene orden >>IFO<<
+    // Para q : cuando ejecutamos la app
+    // lio primero que entra al stack esain activity, se van aregistrando las acciones que se agan en esa pila como entra a settings
+    // si le dapara btn para atras regresa la pila
+
+    // Todoe sto se trabaja con la navegacion
+    // en nav2 era una caja negra q no se sabia q hacia
+    // en nav3 ya sabemos es esta pila
+
+    // mas cambios
+    // serializacion --- es cuando podemos tener obj, datos y otras estructuras de datos
+    // pasarlos de la memoria d enuestro programa a un archivo en formato en este caso json
+    // almacena el estado de comoestaba la pestaña, el activity etc
+    // de forma q al regresar revisa el formato y redibuja como estabna antes
+    // en si como se quedo
+
+    // FINALMENTE
+    // vamso atrabajr con tipos de datos:: SELE FUE EL NAME
+    // pUedo tener una lista o obj en tipo any tipos genericos
+    // Lsita<T> --- nos da libertar de manejar cualquier dato
+
+
+
+    // cuando editemos este archivo: lib.versions.toml
+    // serializacion 1.12.0
+    // implementar el navegation 1.2.1 <- ultima estable
+
+
+
+
+
+    // estado del drawer
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+
+    // ponemos el drawe envolvuiendo el scarfoll
+    ModalNavigationDrawer (
+        drawerState = drawerState,
+        // aqui va el contenido
+        drawerContent = {
+            ModalDrawerSheet {
+                Text("Menú de Navegación", modifier = Modifier.padding(16.dp), fontSize = 20.sp)
+                HorizontalDivider()
+
+                NavigationDrawerItem(
+                    label = { Text("Inicio") },
+                    selected = false,
+                    onClick = {
+                        // Cerramos el menú de forma asíncrona con la corrutina
+                        scope.launch { drawerState.close() }
+                        // Aquí iría tu lógica de navegación a otra pantalla
                     }
-                },
-                // Esto noss paso el profe
-                // INTENTS
-                // Explicitos: Dentro de la app
-                // Implicitos: El sistema resulve en apps ext
-                // Tiene q tener acc al localcontex
-                actions = {
-
-
-                    IconButton (onClick = { openWebScreen(context) } ) {
-                        Icon(
-                            imageVector = Icons.Default.AddLink,
-                            contentDescription = "Abrir un navegador externo",
-                            tint = Color.White
-                        )
-
-                    }
-
-                    // Aqui tenemos que abrir la secondActivityw
-                    IconButton(onClick = {
-                        val intent = Intent(context, SecondActivity::class.java)
-                        context.startActivity(intent)
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.NavigateNext,
-                            contentDescription = "Siguiente pagina",
-                            tint = Color.White
-                        )
-                    }
-                DropDownMenu()
-                }
-            )
-        },
-
-
-
-
-        bottomBar = {
-            BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.primary
-            ) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    text = stringResource(R.string.bottom_app_bar),
-                    color = Color.White,
-                    fontSize = 18.sp
                 )
-            }
-        },
-        floatingActionButton = {
-            val context = LocalContext.current
-            FloatingActionButton(onClick = {
-                // Toast.makeText(
-                //    context,
-                //    R.string.home_fab_text,
-                //    Toast.LENGTH_LONG
-                // ).show()
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = "Snackbar! <3",
-                        actionLabel = "Do something"
-                    )
-                }
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.home_fab_text)
+                NavigationDrawerItem(
+                    label = { Text("Perfil") },
+                    selected = false,
+                    onClick = {
+                        scope.launch { drawerState.close() }
+                    }
                 )
             }
         }
-    ) { innerPadding ->
-        ContentView(modifier = Modifier.padding(innerPadding))
+    ) {
+
+
+
+
+
+        Scaffold(
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }, // Define donde se mostraran los snackbars
+            // el hostState es el controlador de los snackbars
+            topBar = {
+                TopAppBar(
+                    title = { Text(stringResource(R.string.principalScreen)) },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        titleContentColor = Color.White,
+                        actionIconContentColor = Color.White,
+                        navigationIconContentColor = Color.White,
+                        scrolledContainerColor = Color.White,
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {}
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(R.string.back),
+                                tint = Color.White
+                            )
+                        }
+                    },
+                    // Esto noss paso el profe
+                    // INTENTS
+                    // Explicitos: Dentro de la app
+                    // Implicitos: El sistema resulve en apps ext
+                    // Tiene q tener acc al localcontex
+                    actions = {
+
+
+                        IconButton(onClick = { openWebScreen(context) }) {
+                            Icon(
+                                imageVector = Icons.Default.AddLink,
+                                contentDescription = "Abrir un navegador externo",
+                                tint = Color.White
+                            )
+
+                        }
+
+                        // Aqui tenemos que abrir la secondActivityw
+                        IconButton(onClick = {
+                            val intent = Intent(context, SecondActivity::class.java)
+                            context.startActivity(intent)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.NavigateNext,
+                                contentDescription = "Siguiente pagina",
+                                tint = Color.White
+                            )
+                        }
+                        DropDownMenu()
+                    }
+                )
+            },
+
+
+            bottomBar = {
+                BottomAppBar(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.primary
+                ) {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center,
+                        text = stringResource(R.string.bottom_app_bar),
+                        color = Color.White,
+                        fontSize = 18.sp
+                    )
+                }
+            },
+            floatingActionButton = {
+                val context = LocalContext.current
+                FloatingActionButton(onClick = {
+                    // Toast.makeText(
+                    //    context,
+                    //    R.string.home_fab_text,
+                    //    Toast.LENGTH_LONG
+                    // ).show()
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = "Snackbar! <3",
+                            actionLabel = "Do something"
+                        )
+                    }
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.home_fab_text)
+                    )
+                }
+            }
+        ) { innerPadding ->
+            ContentView(modifier = Modifier.padding(innerPadding))
+        }
     }
 }
 
